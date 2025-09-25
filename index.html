@@ -1,50 +1,313 @@
- <section class="gameInfo" id="sobrenos">
-        <div class="center">
-            <h2 style="background:rgba(0,0,0,0.3);margin-top:10px;border-radius:5px"><center><i class="bi bi-play" style="color:tomato;"></i>Sobre Nós</center></h2>
-            <div style="margin-top:10px" class="content">
-<img src="img/circlebg.png">
-<div class="description">
-    <p><span>Master Coins</span></p>
-    <h2>
-       
-</h2>
-<p> Plataforma online de vendas de creditos para Jogos Mobile e Desktop , oferecemos uma Api de forma gratuito para pequenos e grande desenvolvedores de jogos e aplicativos para aumentar ainda mais seus ganhos dentro de seus jogos e aplicativos.</p>
-<div class="items">
-    <div class="content">
-    <div><!--item1-->
-        <img src="img/features-icon-1.png">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Java API - Estilo ENADE</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.quiz-container {
+  background: #fff;
+  padding: 20px 30px;
+  margin-top: 40px;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#question {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#answers button {
+  display: block;
+  margin: 8px 0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  background: #e3e8f0;
+  cursor: pointer;
+  text-align: left;
+  font-size: 15px;
+}
+
+#answers button:hover {
+  background: #cfd7e6;
+}
+
+.correct {
+  color: green;
+  font-weight: bold;
+}
+
+.incorrect {
+  color: red;
+  font-weight: bold;
+}
+
+#next-btn {
+  display: none;
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+#next-btn:hover {
+  background: #0056b3;
+}
+</style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz Java API - Estilo ENADE</h1>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="answers"></div>
+      <p id="feedback"></p>
     </div>
+    <button id="next-btn">Próxima</button>
+  </div>
+  <script>const questions = [
+  {
+    question: "1) Em um sistema de gestão de cidades desenvolvido com Spring Boot, deseja-se expor dados para consumo por diferentes clientes (frontend web, mobile). Nesse contexto, o uso de DTOs (Data Transfer Objects) é recomendado porque:",
+    answers: [
+      { text: "A) Evita expor diretamente as entidades JPA, promovendo segurança e isolamento.", correct: true, hint: "DTOs são usados para transportar dados sem expor a estrutura interna das entidades." },
+      { text: "B) Substitui as entidades no banco de dados, eliminando a necessidade do JPA.", correct: false, hint: "DTO não substitui entidades, apenas transporta dados." },
+      { text: "C) É obrigatório para que o Spring Data funcione corretamente.", correct: false, hint: "Spring Data não exige DTOs, é apenas boa prática." },
+      { text: "D) Permite criar automaticamente métodos de persistência.", correct: false, hint: "Quem cria métodos é o repositório, não o DTO." },
+      { text: "E) Garante a consistência transacional do banco.", correct: false, hint: "Consistência transacional é responsabilidade do JPA e transações, não de DTOs." }
+    ]
+  },
+  {
+    question: "2) Em relação ao uso de Lombok, avalie as alternativas:",
+    answers: [
+      { text: "A) A anotação @Data gera automaticamente getters, setters, equals, hashCode e toString.", correct: true, hint: "@Data facilita o desenvolvimento, reduzindo boilerplate de código." },
+      { text: "B) A anotação @Entity é equivalente ao @Data.", correct: false, hint: "@Entity é do JPA, usada para mapear classes ao banco." },
+      { text: "C) O Lombok substitui totalmente o Hibernate.", correct: false, hint: "Hibernate é um framework ORM, Lombok apenas gera código." },
+      { text: "D) O Lombok elimina a necessidade de DTOs.", correct: false, hint: "DTOs são um padrão de design, independentes de Lombok." },
+      { text: "E) O Lombok garante a integridade das transações.", correct: false, hint: "Transações são controladas pelo Spring, não pelo Lombok." }
+    ]
+  },
+  {
+    question: "3) Em APIs REST desenvolvidas com Spring Boot, qual o método HTTP adequado para atualizar completamente uma entidade existente?",
+    answers: [
+      { text: "A) PUT", correct: true, hint: "PUT substitui o recurso existente pelos dados enviados." },
+      { text: "B) GET", correct: false, hint: "GET apenas recupera dados." },
+      { text: "C) POST", correct: false, hint: "POST é usado para criar novos recursos." },
+      { text: "D) PATCH", correct: false, hint: "PATCH é usado para atualização parcial, não completa." },
+      { text: "E) DELETE", correct: false, hint: "DELETE remove recursos." }
+    ]
+  },
+  {
+    question: "4) Uma API REST deve retornar códigos HTTP apropriados. Quando o cliente solicita uma cidade inexistente pelo ID, a resposta correta é:",
+    answers: [
+      { text: "A) 404 Not Found", correct: true, hint: "404 indica que o recurso não foi encontrado." },
+      { text: "B) 200 OK", correct: false, hint: "200 é usado apenas quando o recurso existe." },
+      { text: "C) 500 Internal Server Error", correct: false, hint: "500 indica erro no servidor, não ausência de recurso." },
+      { text: "D) 201 Created", correct: false, hint: "201 é usado apenas em criação de recursos." },
+      { text: "E) 401 Unauthorized", correct: false, hint: "401 refere-se à falta de autenticação." }
+    ]
+  },
+  {
+    question: "5) No contexto de repositórios Spring Data, o método findByNome(\"São Paulo\") executará:",
+    answers: [
+      { text: "A) Uma consulta SELECT filtrando a entidade pelo campo nome.", correct: true, hint: "Spring Data gera queries automáticas com base na nomenclatura." },
+      { text: "B) Uma exclusão no banco de dados.", correct: false, hint: "findBy não remove dados." },
+      { text: "C) Uma atualização no campo nome.", correct: false, hint: "findBy é somente leitura." },
+      { text: "D) A criação de uma nova cidade.", correct: false, hint: "Criação é feita via save()." },
+      { text: "E) Uma transação de rollback automático.", correct: false, hint: "Rollback não está relacionado a findBy." }
+    ]
+  },
+  {
+    question: "6) Em uma aplicação Spring Boot, a anotação @RestControllerAdvice é utilizada para:",
+    answers: [
+      { text: "A) Centralizar o tratamento de exceções lançadas nos controladores.", correct: true, hint: "@RestControllerAdvice intercepta exceções e permite respostas customizadas." },
+      { text: "B) Criar endpoints REST automaticamente.", correct: false, hint: "Quem cria endpoints é @RestController." },
+      { text: "C) Persistir entidades em banco de dados.", correct: false, hint: "Persistência é feita com JPA Repository." },
+      { text: "D) Gerar logs de requisições HTTP.", correct: false, hint: "Logs podem ser configurados com filtros e interceptors." },
+      { text: "E) Garantir o versionamento de APIs.", correct: false, hint: "Versionamento é feito por convenção de rotas." }
+    ]
+  },
+  {
+    question: "7) O uso do ResponseEntity em um Controller é importante porque:",
+    answers: [
+      { text: "A) Permite definir status HTTP, cabeçalhos e corpo da resposta de forma explícita.", correct: true, hint: "ResponseEntity dá controle total da resposta enviada." },
+      { text: "B) É obrigatório para toda resposta do Spring.", correct: false, hint: "Pode-se retornar objetos diretamente, ResponseEntity é opcional." },
+      { text: "C) Cria automaticamente consultas SQL.", correct: false, hint: "Quem cria queries é o Spring Data." },
+      { text: "D) Substitui o uso de DTOs.", correct: false, hint: "ResponseEntity não substitui DTOs, são conceitos diferentes." },
+      { text: "E) Define apenas cabeçalhos da requisição.", correct: false, hint: "ResponseEntity define status, headers e body." }
+    ]
+  },
+  {
+    question: "8) Em consultas JPQL, para ordenar cidades por população em ordem decrescente, utiliza-se:",
+    answers: [
+      { text: "A) SELECT c FROM Cidade c ORDER BY c.populacao DESC", correct: true, hint: "JPQL usa atributos de entidade, não *." },
+      { text: "B) SELECT * FROM Cidade ORDER BY populacao", correct: false, hint: "Isso é SQL nativo, não JPQL." },
+      { text: "C) SELECT c FROM Cidade c WHERE c.populacao DESC", correct: false, hint: "WHERE filtra, não ordena." },
+      { text: "D) SELECT c.populacao FROM Cidade c", correct: false, hint: "Isso só seleciona, não ordena." },
+      { text: "E) SELECT ALL FROM Cidade ORDER DESC", correct: false, hint: "Sintaxe incorreta." }
+    ]
+  },
+  {
+    question: "9) Em validações de entrada de dados em Controllers, qual anotação deve ser usada para ativar as validações do Bean Validation?",
+    answers: [
+      { text: "A) @Valid", correct: true, hint: "@Valid ativa as validações como @NotNull, @Size etc." },
+      { text: "B) @Autowired", correct: false, hint: "@Autowired injeta dependências." },
+      { text: "C) @Entity", correct: false, hint: "@Entity mapeia entidades JPA." },
+      { text: "D) @RequestParam", correct: false, hint: "@RequestParam extrai parâmetros de query." },
+      { text: "E) @GeneratedValue", correct: false, hint: "Define estratégia de geração de ID, não validação." }
+    ]
+  },
+  {
+    question: "10) Em boas práticas de modelagem de APIs REST, é correto afirmar que:",
+    answers: [
+      { text: "A) As URIs devem ser construídas com substantivos no plural, como /cidades.", correct: true, hint: "URIs RESTful seguem convenções sem verbos, focando em recursos." },
+      { text: "B) É recomendado colocar verbos como /getCidades.", correct: false, hint: "Verbos devem ser expressos pelo método HTTP." },
+      { text: "C) Toda resposta deve retornar 200 OK, independentemente do erro.", correct: false, hint: "Deve-se usar o código de status apropriado." },
+      { text: "D) O corpo da resposta deve sempre ser vazio.", correct: false, hint: "Normalmente retorna JSON com dados." },
+      { text: "E) Métodos HTTP podem ser usados de forma intercambiável.", correct: false, hint: "Cada verbo tem sua semântica específica." }
+    ]
+  },{
+  question: "11) Em um projeto que utiliza Spring Data JPA, deseja-se buscar cidades por múltiplos critérios (nome e população mínima). Qual a forma correta de criar esse método no repositório?",
+  answers: [
+    { text: "A) List<Cidade> findByNomeAndPopulacaoGreaterThan(String nome, int populacao);", correct: true, hint: "Spring Data permite criar métodos com base na nomenclatura dos atributos." },
+    { text: "B) List<Cidade> queryCidade(String nome, int populacao);", correct: false, hint: "queryCidade não segue a convenção do Spring Data." },
+    { text: "C) void persistCidade(Cidade cidade);", correct: false, hint: "Esse método persiste dados, não realiza consulta." },
+    { text: "D) List<Cidade> executeSQL(String query);", correct: false, hint: "Spring Data cria queries automaticamente, não via SQL direto." },
+    { text: "E) Cidade findCidade(Cidade cidade);", correct: false, hint: "Esse método não reflete múltiplos critérios de busca." }
+  ]
+},
+{
+  question: "12) Ao utilizar @Valid em um Controller, se uma validação falhar, o comportamento padrão do Spring Boot será:",
+  answers: [
+    { text: "A) Retornar automaticamente uma resposta 400 Bad Request.", correct: true, hint: "Quando a validação falha, o Spring retorna 400 e detalhes do erro." },
+    { text: "B) Retornar 404 Not Found.", correct: false, hint: "404 refere-se a recurso inexistente, não falha de validação." },
+    { text: "C) Persistir os dados mesmo com erros.", correct: false, hint: "Dados inválidos não são persistidos." },
+    { text: "D) Retornar 500 Internal Server Error.", correct: false, hint: "500 é erro do servidor, não de validação." },
+    { text: "E) Ignorar a validação e continuar o fluxo.", correct: false, hint: "Spring interrompe o fluxo quando a validação falha." }
+  ]
+},
+{
+  question: "13) No contexto de APIs RESTful, a utilização do método PATCH é indicada quando:",
+  answers: [
+    { text: "A) Deseja-se realizar uma atualização parcial de um recurso existente.", correct: true, hint: "PATCH aplica mudanças em apenas alguns campos de um recurso." },
+    { text: "B) Deseja-se criar um novo recurso.", correct: false, hint: "Criação é feita com POST." },
+    { text: "C) Deseja-se excluir completamente um recurso.", correct: false, hint: "Exclusão é feita com DELETE." },
+    { text: "D) Deseja-se substituir todos os dados de um recurso.", correct: false, hint: "Substituição completa é feita com PUT." },
+    { text: "E) Deseja-se listar todos os recursos.", correct: false, hint: "Listagem é feita com GET." }
+  ]
+},
+{
+  question: "14) Em um Controller do Spring Boot, qual é a principal vantagem de utilizar o padrão ResponseEntity em vez de retornar diretamente a entidade?",
+  answers: [
+    { text: "A) Permite maior controle sobre o status e os cabeçalhos da resposta.", correct: true, hint: "ResponseEntity torna a API mais expressiva e alinhada ao protocolo HTTP." },
+    { text: "B) Garante a persistência automática do recurso.", correct: false, hint: "Persistência é feita pelo repositório, não pelo ResponseEntity." },
+    { text: "C) Elimina a necessidade de DTOs.", correct: false, hint: "DTOs continuam sendo úteis para isolar entidades." },
+    { text: "D) Substitui as anotações de validação.", correct: false, hint: "Validação continua sendo feita com Bean Validation." },
+    { text: "E) Cria automaticamente logs de requisição.", correct: false, hint: "Logs devem ser configurados separadamente." }
+  ]
+},
+{
+  question: "15) Sobre o uso de @RestControllerAdvice, é correto afirmar que:",
+  answers: [
+    { text: "A) Pode capturar exceções globais e retornar mensagens customizadas ao cliente.", correct: true, hint: "Essa é sua principal função: centralizar tratamento de erros." },
+    { text: "B) Substitui a necessidade de usar try/catch em qualquer código Java.", correct: false, hint: "Não substitui try/catch em todos os contextos, apenas nos Controllers." },
+    { text: "C) Garante a autenticação e autorização do usuário.", correct: false, hint: "Autenticação é feita por filtros de segurança, não por RestControllerAdvice." },
+    { text: "D) Cria automaticamente os endpoints REST.", correct: false, hint: "Quem cria endpoints é @RestController." },
+    { text: "E) Realiza consultas ao banco de dados sem necessidade de repositório.", correct: false, hint: "Acesso a dados é feito pelo repositório." }
+  ]
+}
+];
 
-    <div> <h2>Parceiros</h2>
-    <p>Jogos e aplicativo parceiros que fazem parte do nosso sitema de Master Coins..</p>
-    <p>Parceiros: <span class="counter">5</span></p>
-</div><!--item1-->
+let currentQuestionIndex = 0;
+let scoreCorrect = 0;
+let scoreWrong = 0;
 
-</div><!--content-->
-<div class="content">
-<div><!--item2-->
-    <img src="img/features-icon-2.png">
-</div>
-<div> <h2>Membros:</h2>
-<p>Usuarios cadastrados em nossa plataforma de vendas Master Coins.</p>
-<p>Rank: <span class="counter">523</span> Usuarios</p>
-</div><!--content-->
-</div><!--item2-->
-<div class="content">
-    <div><!--item2-->
-        <img src="img/features-icon-2.png">
-    </div>
-    <div> <h2>Premiação Mensal</h2>
-    <p>Total em Creditos , que e sorteado mensalmente a nossos usuarios que ja efetuaram uma compra ou mais.</p>
-    <p>Premio Mensal: R$ <span class="counter">100 </span> Reais</p>
-    </div><!--content-->
-    </div><!--item2-->
-<button class="btn"  onclick="showAlert()">Ver Ganhadores</button>
-    </div><!--item2-->
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const feedbackElement = document.getElementById("feedback");
+const nextButton = document.getElementById("next-btn");
 
-</div><!--items-->
-</div><!--descrption-->
+function startQuiz() {
+  currentQuestionIndex = 0;
+  scoreCorrect = 0;
+  scoreWrong = 0;
+  showQuestion();
+}
 
-            </div><!--content-->
-        </div><!--cneter-->
-    </section>
+function showQuestion() {
+  resetState();
+  const currentQuestion = questions[currentQuestionIndex];
+  questionElement.textContent = currentQuestion.question;
+
+  currentQuestion.answers.forEach(answer => {
+    const button = document.createElement("button");
+    button.textContent = answer.text;
+    button.addEventListener("click", () => selectAnswer(answer));
+    answersElement.appendChild(button);
+  });
+}
+
+function resetState() {
+  feedbackElement.textContent = "";
+  nextButton.style.display = "none";
+  answersElement.innerHTML = "";
+}
+
+function selectAnswer(answer) {
+  if (answer.correct) {
+    scoreCorrect++;
+    feedbackElement.textContent = "✅ Correto! " + answer.hint;
+    feedbackElement.className = "correct";
+  } else {
+    scoreWrong++;
+    feedbackElement.textContent = "❌ Errado! Explicação: " + answer.hint;
+    feedbackElement.className = "incorrect";
+  }
+  nextButton.style.display = "block";
+}
+
+nextButton.addEventListener("click", () => {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    showQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults() {
+  resetState();
+  questionElement.textContent = "🎉 Fim do quiz!";
+  feedbackElement.textContent = `Você acertou ${scoreCorrect} questões e errou ${scoreWrong}.`;
+  feedbackElement.className = "";
+  nextButton.style.display = "none";
+}
+
+startQuiz();
+</script>
+</body>
+</html>
